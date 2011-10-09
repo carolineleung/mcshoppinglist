@@ -1,0 +1,265 @@
+from mongoengine.document import Document
+from mongoengine.fields import  StringField, DateTimeField, ReferenceField, BooleanField
+from mcshoppinglist.etags.etagmanager import EtagManager
+import base64
+from datetime import datetime
+from mcshoppinglist.shoppinglists.exceptions import ShoppingListError
+from mcshoppinglist.shoppinglists.models import EtagCacheEntry, ShoppingList, ShoppingListItem, EtagCacheEntryDao
+
+# This default date will be overridden.
+DEFAULT_DATE=datetime(2011, 01, 01)
+INVALID_ID = -1
+
+class ModelStateConstants(object):
+    LIVE = 'LIVE'
+    DELETED = 'DELETED'
+    ALL_STATES = { LIVE, DELETED }
+
+DEFAULT_STATE = ModelStateConstants.LIVE
+
+def _fix_state(model):
+    if not hasattr(model, 'state') or not model.state in ModelStateConstants.ALL_STATES:
+        model.state = DEFAULT_STATE
+
+def get_id_str(doc):
+    """
+    Avoid using MongoEngine Document self.id which returns an instance of ObjectId
+    and if converted to a str uses repr: ObjectId('4d7d0785cf66075114000002')
+    Instead, this returns the hash string '4d7d0785cf66075114000002' via str().
+    """
+    if not hasattr(doc, 'id'):
+        raise ShoppingListError('No id property found for doc: {0}'.format(doc))
+    id = str(doc.id)
+    if not id:
+        raise ShoppingListError('Missing id for doc: {0}'.format(doc))
+    return id
+
+
+# TODO Rename to something else..?
+class EtagManager(object):
+    # http://docs.python.org/library/datetime.html#strftime-strptime-behavior
+    DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S:%f'
+    SHOPPING_LIST_TAG = 'ShoppingList'
+
+    def _get_category(self, obj):
+        # TODO This won't work with duck typing
+        obj_class = None
+        if obj:
+            obj_class = obj.__class__
+        if issubclass(obj_class, ShoppingList) or issubclass(obj_class, ShoppingListItem):
+            return EtagManager.SHOPPING_LIST_TAG
+        raise ShoppingListError('Failed to map type to tag for object: {0}'.format(obj))
+
+    def generate_etag(self, model_for_etag, last_modified_for_etag):
+        if not model_for_etag:
+            raise ShoppingListError('Either a list or item parameter must be specified.')
+
+        target_tag = self._get_category(model_for_etag)
+        # last_modified = model_for_etag.last_modified
+        last_modified = last_modified_for_etag.strftime(EtagManager.DATETIME_FORMAT)
+        model_id = model_for_etag.id
+
+        # Updating this format requires that you also update get_changelist_from_etag()
+        etag_u = unicode('{0}|{1}|{2}'.format(target_tag, model_id, last_modified))
+        return base64.b64encode(etag_u)
+
+    def _decode_etag(self, etag_b64):
+        """
+        etag_b64: base64 encoded etag.
+        returns: base64 decoded etag.
+        """
+        if not etag_b64:
+            raise ShoppingListError('Invalid (empty) etag parameter.')
+        return base64.b64decode(etag_b64)
+
+    def get_last_modified_from_etag(self, etag_b64):
+        from datetime import datetime
+        etag = self._decode_etag(etag_b64)
+        if not etag:
+            raise ShoppingListError('Invalid (empty) etag parameter.')
+        parts = etag.split('|')
+        if not parts or len(parts) < 3:
+            raise ShoppingListError('Failed to parse last_modified in etag parameter.')
+        last_modified = None
+        try:
+            last_modified = parts[2]
+            last_modified = datetime.strptime(last_modified, EtagManager.DATETIME_FORMAT)
+        except Exception as ex:
+            raise ShoppingListError('Failed to parse last_modified: {0}    in etag: {1}'.format(last_modified, etag), ex)
+        return last_modified
+
+    def save_etag(self, model_for_etag, last_modified_for_etag=None):
+        if not last_modified_for_etag:
+            last_modified_for_etag = model_for_etag.last_modified
+        etag = self.generate_etag(model_for_etag, last_modified_for_etag)
+        # django error on save: You must not use 8-bit bytestrings unless you use a text_factory that can interpret 8-bit bytestrings (like text_factory = str). It is highly recommended that you instead just switch your application to Unicode strings.
+        #etag = unicode(etag)
+
+        etag_model = self.get_etag_model(model_for_etag)
+
+        if not etag_model:
+            etag_model = EtagCacheEntry()
+
+        etag_model.target_model_id = str(model_for_etag.id)
+        etag_model.target_category = self._get_category(model_for_etag)
+        etag_model.etag = etag
+        etag_model.last_modified = datetime.utcnow()
+        dao = EtagCacheEntryDao()
+        dao.save(etag_model)
+        return etag_model
+
+    def get_etag_model(self, model_for_etag):
+        target_category = self._get_category(model_for_etag)
+        dao = EtagCacheEntryDao()
+        etag_queryset = dao.get_by_target(model_for_etag.id, target_category)
+        if etag_queryset.count() <= 0 or not etag_queryset[0]:
+            return None
+        # TODO If there's more than one, that's an error we should clean up
+        if etag_queryset.count() > 1:
+            raise ShoppingListError('Multiple etags found for model with id: '
+                                    '{0}  category: {1}'.format(model_for_etag.id, target_category))
+        return etag_queryset[0]
+
+#    def get_etag(self, model_for_etag):
+#        return self.get_etag_model(model_for_etag).etag;
+
+    def delete_etag(self, model_for_etag=None):
+        raise ShoppingListError('Not implemented')
+
+
+class ShoppingList(Document):
+    # id = None # TODO Try id = None so that IDE syntax highlighting thinks there's an id on this. (Will adding id = None break MongoEngine?)
+    name = StringField(max_length=200)
+    last_modified = DateTimeField(default=DEFAULT_DATE)
+    state = StringField(max_length=10, min_length=1, default=ModelStateConstants.LIVE)
+
+    #def save(self, force_insert=False, force_update=False, using=None):
+    def save(self, *args, **kwargs):
+        self.last_modified = datetime.utcnow()
+        _fix_state(self) # TODO Revisit this ugly way of guaranteeing state
+        # super.save() first to ensure an id is assigned
+        super(ShoppingList, self).save(*args, **kwargs)
+        try:
+            etag_manager = EtagManager()
+            etag_manager.save_etag(self)
+        except Exception as ex:
+            raise ShoppingListError('Failed to save etag. ShoppingList id: {0}'.format(self.id), ex)
+
+class ShoppingListItem(Document):
+    # TODO Revise to use id instead?
+    shopping_list = ReferenceField(ShoppingList)
+    name = StringField(max_length=200, default='')
+    checked = BooleanField(default=False)
+    last_modified = DateTimeField(default=DEFAULT_DATE)
+    labels = StringField(max_length=300, default='')
+    state = StringField(max_length=10, min_length=1, default=ModelStateConstants.LIVE)
+
+    #def save(self, force_insert=False, force_update=False, using=None):
+    def save(self, *args, **kwargs):
+        self.last_modified = datetime.utcnow()
+        _fix_state(self) # TODO Revisit this ugly way of guaranteeing state
+        super(ShoppingListItem, self).save(*args, **kwargs)
+        try:
+            etag_manager = EtagManager()
+            # Use the ShoppingList for ETag id, but our ShoppingListItem last_modified.
+            # This routes both ShoppingList and ShoppingListItem to the same ETag.
+            etag_manager.save_etag(self.shopping_list, self.last_modified)
+        except Exception as ex:
+            raise ShoppingListError('Failed to save etag. ShoppingListItem id: {0}'.format(self.id), ex)
+
+    def __unicode__(self):
+        return 'name: {0}, id: {1}'.format(self.name, self.id)
+
+
+# TODO Move this over to etags package
+class EtagCacheEntry(Document):
+    #  str(bson.ObjectId) i.e. the string hex value of the model's mongoengine/mongodb ObjectId. Note that mongoengine Document.id is a bson.ObjectId instance; call str on it.
+    target_model_id = StringField(min_length=1)
+    target_category = StringField(max_length=200)
+    # TODO Add an index on etag
+    etag = StringField(max_length=200)
+    last_modified = DateTimeField(default=DEFAULT_DATE)
+
+    def save(self, *args, **kwargs):
+        self.last_modified = datetime.utcnow()
+        super(EtagCacheEntry, self).save(*args, **kwargs)
+    
+
+class DaoBase(object):
+    def delete(self, model):
+        model.state = ModelStateConstants.DELETED
+        model.save()
+
+    def save(self, model):
+        model.save()
+
+    def get_by_id_from_objects(self, id, model_objects):
+        """
+        model_objects: ShoppingListItem.objects
+        """
+        model = None
+        try:
+            # TODO can we use Document.objects(id=objid) to avoid the exception handling? get() raises DoesNotExist.
+            # Auto wrapped if id is already an ObjectId. Auto converted to ObjectId if id is hex string.
+            model = model_objects.get(id=id)
+        except Exception:
+            # ignore
+            pass
+        return model
+
+class ShoppingListDao(DaoBase):
+    def get_count(self):
+        # TODO Does this RETRIEVE all documents??? More efficient way to get a count?
+        return self.get_all().count()
+    
+    def get_all(self):
+        return ShoppingList.objects.filter(state__ne=ModelStateConstants.DELETED)
+
+    def get_by_id(self, id):
+        return self.get_by_id_from_objects(id, ShoppingList.objects)
+
+class ShoppingListItemDao(DaoBase):
+    def get_by_id(self, id, shopping_list_model=None):
+        """
+        shopping_list_model: when not None, restrict the get to only
+        """
+        if shopping_list_model:
+            qs = ShoppingListItem.objects.filter(id=id, shopping_list=shopping_list_model)
+            # TODO Assert? Should never be more than one matching exact id!
+            if qs and qs.count() > 0 and qs[0]:
+                return qs[0]
+            return None
+        else:
+            return self.get_by_id_from_objects(id, ShoppingListItem.objects)
+
+    def get_by_shopping_list_model(self, shopping_list_model, since_last_modified=None, include_deleted_items=False):
+        filter_kwargs = { 'shopping_list': shopping_list_model }
+
+        if since_last_modified:
+            filter_kwargs['last_modified__gt'] = since_last_modified
+        if not include_deleted_items:
+            filter_kwargs['state__ne'] = ModelStateConstants.DELETED
+
+        return ShoppingListItem.objects.filter(**filter_kwargs)
+
+    def mark_item_deleted(self, item_model):
+        item_model.state = ModelStateConstants.DELETED
+        item_model.save()
+
+    def mark_items_deleted(self, shopping_list_model):
+        """
+        shopping_list_model: a ShoppingList model
+        """
+        delete_items_queryset = ShoppingListItem.objects.filter(shopping_list=shopping_list_model)
+        if delete_items_queryset and delete_items_queryset.count() > 0:
+            # delete_items_queryset.delete()
+            for item_to_delete in delete_items_queryset:
+                self.mark_item_deleted(item_to_delete)
+
+class EtagCacheEntryDao(DaoBase):
+    def get_by_id(self, id):
+        return self.get_by_id_from_objects(id, EtagCacheEntry.objects)
+
+    def get_by_target(self, target_model_id, target_category):
+        id = str(target_model_id)
+        return EtagCacheEntry.objects.filter(target_model_id=id, target_category=target_category)

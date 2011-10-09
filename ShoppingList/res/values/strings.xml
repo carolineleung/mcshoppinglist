@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MC Shopping List</string>
+    <string name="add_entry_text">Add</string>
+    <string name="update_entry_text">Update</string>
+    <string name="uncategorized">Uncategorized</string>
+    <string name="ok_text">OK</string>
+    <string name="cancel_text">Cancel</string>
+
+    <string name="menu_view_all">All</string>
+    <string name="menu_view_checked">Checked</string>
+    <string name="menu_view_unchecked">Unchecked</string>
+    <string name="menu_import_from_txt_file">Import from txt file</string>
+    <string name="menu_filter_by_labels">Filter by labels</string>
+    <string name="menu_clear_items">Clear items</string>
+    <string name="menu_sync_list">Sync from server</string>
+    <string name="menu_prefs">Settings</string>
+
+    <string name="title_labels">Labels: (comma-separated)</string>
+    <string name="title_item_name">Item:</string>
+    <string name="title_additional_notes">Additional Notes:</string>
+
+    <string name="prefs_network_enable">Enable Network</string>
+    <string name="prefs_network_enable_summary">Enable network connection to retrieve updates</string>
+    <string name="prefs_network_frequency">Pull Frequency</string>
+    <string name="prefs_network_frequency_summary">Update retrieval frequency (in sec)</string>
+    <string name="launching_preferences">Launching ShoppingList app preferences</string>
+    
+</resources>

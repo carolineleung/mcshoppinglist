@@ -1,0 +1,43 @@
+{% extends "base/base_with_jquery.html" %}
+
+{% block title %}MC Shopping List: Editor{% endblock %}
+{% block end_of_head %}
+    <link rel="stylesheet" href="{{ STATIC_DOC_ROOT }}/css/shoppinglisteditor/shopping_list_static_editor_main.css"/>
+    <script type="application/javascript"
+            src="{{ STATIC_DOC_ROOT }}/js/shoppinglisteditor/shopping_list_static_editor_main.js">
+    </script>
+{% endblock %}
+
+{% block body_content %}
+<div id="outermostDiv">
+    <div id="leftNav">
+        <div id="shoppingListChooserLabel">
+            <p>Shopping Lists:</p>
+        </div>
+        <div id="shoppingListChooserDiv">
+            {% for shopping_list in all_shopping_lists %}
+                <div id="{{ shopping_list.id }}" title="{{ shopping_list.name }}">
+                    <!-- TODO Truncate the displayed name with "..." when too long. -->
+                    {{ shopping_list.name }} ({{ shopping_list.id }})
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div id="mainWindow">
+        <div id="editorHeaderBarDiv">
+            <div id="actionButtons">
+                <input type="button" id="createButton" name="Create" value="Create New List"/>
+                <input type="button" id="saveButton" name="Save" value="Save"/>
+                <input type="button" id="reloadButton" name="Reload" value="Reload"/>
+            </div>
+            <div id="statusMessageLabel">
+            </div>
+            <div id="shoppingListTitleLabel">
+            </div>
+        </div>
+        <div id="editorAreaDiv">
+            <textarea id="editorTextArea" class="styledTextArea"></textarea>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,33 @@
+MCShoppingList README
+bleh
+# Get setuptools / easy_install
+# http://pypi.python.org/pypi/setuptools#downloads
+
+
+# Pyramid/Pylons install
+# http://docs.pylonsproject.org/projects/pyramid/1.0/narr/install.html
+easy_install virtualenv
+virtualenv --no-site-packages pylonsenv
+cd pylonsenv\Scripts
+activate
+# Add pylonsenv to .hgignore
+easy_install pyramid
+# Create our project's development egg links in the pylonsenv
+cd MCShoppingList
+python setup.py develop
+# Run the tests to make sure it's working:
+python setup.py test -q
+
+
+# Install mongodb (> 1.8.x)
+# http://www.mongodb.org/downloads
+# Install mongodb drivers and MongoEngine
+easy_install -U pymongo
+easy_install -U mongoengine
+
+
+# Install nose for testing
+easy_install -U nose
+
+# Add WebTest for TestApp functional testing per http://docs.pylonsproject.org/projects/pyramid/1.0/narr/testing.html
+easy_install webtest

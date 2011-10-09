@@ -1,0 +1,86 @@
+Metadata-Version: 1.0
+Name: MCShoppingList
+Version: 0.0
+Summary: MCShoppingList
+Home-page: UNKNOWN
+Author: UNKNOWN
+Author-email: UNKNOWN
+License: UNKNOWN
+Description: MCShoppingList README
+        
+        ###############################
+        # Prerequisites
+        #
+        
+        Python 2.7
+        
+        # Get setuptools / easy_install
+        # http://pypi.python.org/pypi/setuptools#downloads
+        
+        easy_install virtualenv
+        
+        # Pyramid/Pylons install
+        # http://docs.pylonsproject.org/projects/pyramid/1.0/narr/install.html
+        virtualenv --no-site-packages pylonsenv
+        cd pylonsenv\Scripts
+        activate
+        # Add pylonsenv to .hgignore
+        easy_install pyramid
+        # Create our project's development egg links in the pylonsenv
+        cd MCShoppingList
+        python setup.py develop
+        # Run the tests to make sure it's working:
+        python setup.py test -q
+        
+        
+        # Install mongodb (> 1.8.x)
+        # http://www.mongodb.org/downloads
+        # Install mongodb drivers and MongoEngine
+        easy_install -U pymongo
+        easy_install -U mongoengine
+        
+        
+        # Install nose for testing
+        easy_install -U nose
+        
+        # Add WebTest for TestApp functional testing per http://docs.pylonsproject.org/projects/pyramid/1.0/narr/testing.html
+        easy_install webtest
+        
+        
+        ##################################
+        # Running a standalone server
+        
+        # Per http://docs.pylonsproject.org/projects/pyramid/1.0/narr/startup.html
+        paster serve development.ini
+        
+        
+        #################################
+        # Debugging a standalone server
+        
+        # Per http://stackoverflow.com/questions/147650/debug-pylons-application-through-eclipse
+        
+        IDE debug configuration:
+        
+        script:
+        pylonsenv\Scripts\paster-script.py
+        
+        params:
+        serve development.ini
+        
+        working dir:
+        mcshoppinglist\Playground\MCShoppingList
+        
+        
+        
+        
+        0.0
+        ---
+        
+        -  Initial version
+        
+Keywords: web pyramid pylons
+Platform: UNKNOWN
+Classifier: Programming Language :: Python
+Classifier: Framework :: Pylons
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Topic :: Internet :: WWW/HTTP :: WSGI :: Application

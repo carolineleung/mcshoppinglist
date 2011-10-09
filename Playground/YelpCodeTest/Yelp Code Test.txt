@@ -1,0 +1,43 @@
+For yelp search we need to highlight document snippets that match a query. For 
+example a yelp search for [deep dish pizza] returns documents that match the 
+query as well as highlights that try to show why the document is relevant. 
+(http://www.yelp.com/search?find_desc=deep+dish+pizza&ns=1&rpp=10&find_lo
+c=San+Francisco%2C+CA ).  Note that highlights (1) highlight all the words in 
+the query and (2) are not necessarily the full document (they are 
+instead only a relevant snippet). 
+ 
+For this question you will write a function that finds the most relevant snippet for 
+a document and highlights all the query terms that appear in the snippet 
+(basically the highlights you saw on the linked search page). 
+It is up to you to define what constitutes a good snippet and how big the snippets 
+will be. 
+ 
+Indicate highlights by surrounding the text to be highlighted with [[HIGHLIGHT]] 
+... [[ENDHIGHLIGHT]].   
+For instance "Little star's deep dish pizza sure is fantastic." would look like "Little 
+star's [[HIGHLIGHT]]deep dish pizza[[ENDHIGHLIGHT]] sure is fantastic." 
+internally. 
+ 
+One highlighting example might be: 
+highlight_doc("I like fish.  Little star's deep dish pizza sure is fantastic. Dogs are 
+funny.", "deep dish pizza") -> "Little star's [[HIGHLIGHT]]deep dish 
+pizza[[ENDHIGHLIGHT]] sure is fantastic." 
+Note that your highlighter doesn't have to have the exact same result on this 
+example, since *you* are defining what a good snippet is. 
+!
+The solution can be in any language (but python is preferred). Attach your native 
+source files (.py, .java, .cpp, etc...). Hint: Write your code as if your peers may be 
+maintaining your code. Your code should be as if it were for a production 
+environment. And don't forget to include unit tests! 
+ 
+I would like a function with the signature similar to the following: 
+ 
+def highlight_doc(doc, query): 
+   """ 
+   Args: 
+      doc - String that is a document to be highlighted 
+      query - String that contains the search query 
+ 
+  Returns: 
+      The the most relevant snippet with the query terms highlighted. 
+  """!

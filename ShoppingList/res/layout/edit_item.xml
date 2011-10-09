@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="280dp" 
+	android:layout_height="wrap_content" 
+	android:layout_gravity="fill_horizontal">
+    
+	<TextView android:text="@string/title_labels"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:textStyle="bold" 
+		android:layout_marginLeft="10dp" />
+	
+	<EditText android:id="@+id/edit_input_labels"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content" 
+		android:singleLine="true" 
+		android:layout_marginLeft="10dp" 
+		android:layout_marginRight="10dp" />
+			
+	<TextView android:text="@string/title_item_name"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="10dp"
+		android:textStyle="bold" 
+		android:layout_marginLeft="10dp" />
+
+	<EditText android:id="@+id/edit_input_item"
+		android:layout_width="fill_parent"
+        android:layout_height="wrap_content" 
+        android:singleLine="true" 
+		android:layout_marginLeft="10dp" 
+		android:layout_marginRight="10dp" />
+
+	<TextView android:text="@string/title_additional_notes"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:textStyle="bold" 
+		android:layout_marginTop="10dp"
+		android:layout_marginLeft="10dp" />
+	
+	<EditText android:id="@+id/edit_input_additional_notes"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content" 
+		android:singleLine="false" 
+		android:layout_marginLeft="10dp" 
+		android:layout_marginRight="10dp" />
+                
+	<LinearLayout
+		android:orientation="horizontal"
+		android:layout_width="fill_parent" 
+		android:layout_height="wrap_content"
+		android:layout_marginTop="20dp" 
+		android:layout_marginBottom="20dp" >
+	
+	    <Button android:id="@+id/edit_submit_button"
+	        android:layout_width="120dp" 
+	        android:layout_height="wrap_content"
+	        android:text="@string/update_entry_text" 
+	        android:layout_gravity="center_horizontal"
+			android:layout_marginLeft="10dp" 
+	        android:textStyle="bold" />
+	
+	    <Button android:id="@+id/edit_cancel_button"
+	        android:layout_width="120dp" 
+	        android:layout_height="wrap_content"
+	        android:text="@string/cancel_text" 
+	        android:layout_gravity="center_horizontal"
+			android:layout_marginLeft="10dp" 
+	        android:textStyle="bold" />
+   
+   </LinearLayout>     
+   
+</LinearLayout>

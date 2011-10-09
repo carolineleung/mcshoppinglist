@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="org.anon.mylist"
+      android:versionCode="1"
+      android:versionName="1.0">
+    <application android:icon="@drawable/icon" android:label="@string/app_name">
+        <activity android:name="MyListPlayground"
+                  android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!--  authorities must match the CONTENT_URI on the ContentProvider impl, without the scheme or path. -->
+        <!--  multiprocess attribute to "true" if data does not need to be synchronized between multiple running versions of the content provider -->
+        <provider android:name=".GenreContentProvider"
+            android:authorities="org.anon.mylist.genrecontentprovider"
+            android:multiprocess="true"
+        />
+    </application>
+
+
+</manifest> 

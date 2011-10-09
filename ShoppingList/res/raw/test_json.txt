@@ -1,0 +1,51 @@
+{
+    "id": 1, 
+    "items": [
+        {
+            "checked": false, 
+            "id": 1, 
+            "labels": "label1,label2,label3", 
+            "last_modified": "2011-02-15T21:15:38", 
+            "links": [
+                {
+                    "rel": "self", 
+                    "uri": "/1/items/1/"
+                }, 
+                {
+                    "rel": "/linkrels/shopping_list/items/partial_update", 
+                    "uri": "/1/items/diff/"
+                }
+            ], 
+            "name": "item1 orange", 
+            "type": "ShoppingListItem"
+        },
+        {
+            "checked": true, 
+            "id": 2, 
+            "labels": "___SLM", 
+            "last_modified": "2011-02-16T21:15:38", 
+            "links": [
+                {
+                    "rel": "self", 
+                    "uri": "/1/items/2/"
+                }, 
+                {
+                    "rel": "/linkrels/shopping_list/items/partial_update", 
+                    "uri": "/1/items/diff/"
+                }
+            ], 
+            "name": "item2 apple", 
+            "type": "ShoppingListItem"
+        }
+
+    ], 
+    "last_modified": "2011-02-15T21:15:38", 
+    "links": [
+        {
+            "rel": "self", 
+            "uri": "/1/"
+        }
+    ], 
+    "name": "Test List Name 1", 
+    "type": "ShoppingList"
+}

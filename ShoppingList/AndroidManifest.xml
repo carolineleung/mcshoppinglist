@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="com.mcshoppinglist.app"
+      android:versionCode="1"
+      android:versionName="1.0">
+    
+      
+    <application android:name="com.mcshoppinglist.app.checklist.ShoppingListApplication"
+    		android:icon="@drawable/icon" android:label="@string/app_name">
+    
+ 		<provider android:name="com.mcshoppinglist.app.dataprovider.ShoppingListDataProvider"
+        		android:authorities="com.mcshoppinglist.app.shoppinglistdataprovider" />
+        		
+        <service android:name="com.mcshoppinglist.app.service.ShoppingListUpdateService" android:enabled="true" />
+  
+        <activity android:name="com.mcshoppinglist.app.checklist.CheckListActivity"
+                  android:label="@string/app_name">              
+                  <!--    
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+              -->
+            <intent-filter>
+                <action android:name="android.intent.action.INSERT" />
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.EDIT" />
+                <action android:name="android.intent.action.PICK" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="vnd.android.cursor.dir/vnd.mcshoppinglist.item" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.GET_CONTENT" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="vnd.android.cursor.item/vnd.mcshoppinglist.item" />
+            </intent-filter>
+        </activity>
+        <activity android:name="com.mcshoppinglist.app.dashboard.ListDashboardActivity" android:label="@string/app_name">
+        	<intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name="com.mcshoppinglist.app.service.ShoppingListPreferenceActivity" android:label="@string/launching_preferences" />
+
+    </application>
+	<uses-permission android:name="android.permission.INTERNET"></uses-permission>
+
+
+</manifest> 

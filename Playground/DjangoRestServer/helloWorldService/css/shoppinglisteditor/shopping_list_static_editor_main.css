@@ -1,0 +1,64 @@
+body {
+    font-family: Calibri, Arial;
+}
+
+/*
+
+*/
+div {
+    border: 1px dashed #ff00ff;
+}
+
+#outermostDiv {
+    width: 90%;
+    height: 100%;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#leftNav {
+    width: 15%;
+    height: 100%;
+    position: relative;
+    float: left;
+    overflow: hidden;
+}
+
+#shoppingListChooserDiv {
+    height: 100%;
+    max-height: 300px;
+    position: relative;
+    overflow: auto;
+}
+
+#mainWindow {
+    margin-left: auto;
+    width: 85%;
+    height: 100%;
+    position: relative;
+    border: 1px solid #0000ff;
+}
+
+textarea.styledTextArea {
+    width: 95%;
+    /* TODO height: 100% doesn't work. How to fill visible browser window? */
+    height: 500px;
+    border: 3px solid #cccccc;
+    padding: 5px;
+    position: relative;
+}
+
+#shoppingListChooserDiv input {
+    padding: 5px;
+    float: left;
+}
+
+.listChoiceHighlighted {
+    background-color: #00aaff;
+}
+
+#statusMessageLabel {
+    position: relative;
+    float: right;
+}

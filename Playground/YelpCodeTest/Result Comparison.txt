@@ -1,0 +1,84 @@
+____________codeTestDescriptionSnippet
+SearchHighlighter result:
+Little star's [[HIGHLIGHT]]deep dish pizza[[ENDHIGHLIGHT]] sure is fantastic.
+
+____________yelpDocPizzaGB1
+Yelp search result snippet:
+neither here nor there....  definitely not thin crust, or ny style pizza, but square 'deep dish' pizza, well not really deep dish either....  little star is way better for deep dish. even BJ's
+SearchHighlighter result:
+neither here nor there.... definitely not thin crust, or ny style [[HIGHLIGHT]]pizza,[[ENDHIGHLIGHT]] but square [[HIGHLIGHT]]'deep dish' pizza,[[ENDHIGHLIGHT]] well not really [[HIGHLIGHT]]deep dish[[ENDHIGHLIGHT]] either.... little star is way better for [[HIGHLIGHT]]deep dish[[ENDHIGHLIGHT]]. even BJ's is [[HIGHLIGHT]]deep[[ENDHIGHLIGHT]]
+
+
+____________yelpDocPizzaLS1
+Yelp search result snippet:
+We ordered the Classic Deep Dish Pizza, and the Pesto Based Thin Crust Pizza.  The Classic Deep Dish was super super good! I had one bite of the crust, and I was in heaven. The crust was probably
+SearchHighlighter result:
+the reviews, I should have seen that coming in haha. Plus, we had a party of 8. We ordered the Classic [[HIGHLIGHT]]Deep Dish Pizza,[[ENDHIGHLIGHT]] and the Pesto Based Thin Crust [[HIGHLIGHT]]Pizza[[ENDHIGHLIGHT]]. The Classic [[HIGHLIGHT]]Deep Dish[[ENDHIGHLIGHT]] was super super
+
+
+____________yelpDocPizzaPD1
+Yelp search result snippet:
+the Salted Caramel ice cream at Bi-Rite Creamery, and now the best thin crust pizza at Pizzeria Delfina. I love them all!  For deep dish, I think of Little Star's classic pizza. Now for thin crust, I
+SearchHighlighter result:
+Creamery, and now the best thin crust [[HIGHLIGHT]]pizza[[ENDHIGHLIGHT]] at Pizzeria Delfina. I love them all! For [[HIGHLIGHT]]deep dish,[[ENDHIGHLIGHT]] I think of Little Star's classic [[HIGHLIGHT]]pizza[[ENDHIGHLIGHT]]. Now for thin crust, I immediately think of Pizzeria Delfina.
+
+____________yelpDocRisotto1LongQuery
+Yelp search result snippet:
+good but not better than anywhere else I've had it.  - lobster risotto - well cooked, fresh but not any better than a local joint that does risotto in dallas - frog legs - salty - pork belly/tenderloin
+SearchHighlighter result:
+memorable. Don't get me wrong. I love [[HIGHLIGHT]]food[[ENDHIGHLIGHT]] and I wanted more [[HIGHLIGHT]]than[[ENDHIGHLIGHT]] anything else to LOVE Danko, but I didn't. I had: - foie gras - [[HIGHLIGHT]]good[[ENDHIGHLIGHT]] but not [[HIGHLIGHT]]better than[[ENDHIGHLIGHT]] anywhere else I've had it.
+
+____________yelpDocFrench1
+Yelp search result snippet:
+de certains très bons restaurants.  Au final, même si l'addition peut paraître chère, on en a vraiment pour son argent, on sort du restaurant repu tout en ayant l'impression d'avoir mangé équilibré
+SearchHighlighter result:
+pour déjeuner. C'est un peu la version 2.0 du Bobun traditionnel, avec un décor moderne [[HIGHLIGHT]]très[[ENDHIGHLIGHT]] propre, et surtout on peut décider de tous les ingrédients qu'on veut. (j'aime pas le coriandre par
+
+____________yelpDocPizzaLS2MissingSpaces
+SearchHighlighter result:
+7:45 or so. But if I had read the reviews, I should have seen that coming in haha. Plus, we had a party of 8. We ordered the Classic [[HIGHLIGHT]]Deep Dish Pizza,[[ENDHIGHLIGHT]] and the Pesto Based Thin Crust [[HIGHLIGHT]]Pizza[[ENDHIGHLIGHT]].
+
+
+
+
+
+____________Some test results:
+
+SearchHighlighter result:
+[[HIGHLIGHT]]deep dish pizza[[ENDHIGHLIGHT]]
+
+SearchHighlighter result:
+[[HIGHLIGHT]]deep dish[[ENDHIGHLIGHT]] blah blah blah blah blah blah yum blah blah blah yummy blah blah [[HIGHLIGHT]]pizza[[ENDHIGHLIGHT]]
+
+SearchHighlighter result:
+blah blah blah blah [[HIGHLIGHT]]deep[[ENDHIGHLIGHT]] blah [[HIGHLIGHT]]dish[[ENDHIGHLIGHT]] blah [[HIGHLIGHT]]pizza[[ENDHIGHLIGHT]] yum blah blah blah yummy blah blah
+
+SearchHighlighter result:
+This place has great [[HIGHLIGHT]]deep dish[[ENDHIGHLIGHT]]! Best [[HIGHLIGHT]]pizza[[ENDHIGHLIGHT]]... in the world of [[HIGHLIGHT]]pizza[[ENDHIGHLIGHT]]? [[HIGHLIGHT]]Deep Dish Pizza[[ENDHIGHLIGHT]]!?!
+
+SearchHighlighter result:
+And more [[HIGHLIGHT]]Deep dish   pizza,[[ENDHIGHLIGHT]] with a comma.
+
+SearchHighlighter result:
+I like fish.  Little star's [[HIGHLIGHT]]deep dish pizza[[ENDHIGHLIGHT]] sure is fantastic. Dogs are funny.
+
+SearchHighlighter result:
+Really? blah blah [[HIGHLIGHT]]Deep diSh pIZZa[[ENDHIGHLIGHT]]!
+
+SearchHighlighter result:
+
+
+SearchHighlighter result:
+null
+
+SearchHighlighter result:
+blah blah blah blah deep blah dish blah pizza yum blah blah blah yummy blah blah
+
+SearchHighlighter result:
+blah blah blah blah [[HIGHLIGHT]]deep[[ENDHIGHLIGHT]] blah [[HIGHLIGHT]]dish[[ENDHIGHLIGHT]] blah  [[HIGHLIGHT]]pizza[[ENDHIGHLIGHT]] yum blah blah blah yummy blah blah
+
+SearchHighlighter result:
+7:45 or so. But if I had read the reviews, I should have seen that coming in haha. Plus, we had a party of 8. We ordered the Classic [[HIGHLIGHT]]Deep Dish Pizza,[[ENDHIGHLIGHT]] and the Pesto Based Thin Crust [[HIGHLIGHT]]Pizza[[ENDHIGHLIGHT]].
+
+SearchHighlighter result:
+Little star's [[HIGHLIGHT]]deep dish pizza[[ENDHIGHLIGHT]] sure is fantastic.

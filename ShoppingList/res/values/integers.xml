@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <integer name="item_dynamic_data">101</integer>
+  
+  <!-- 
+  <integer name="labels">102</integer>
+  <integer name="item">103</integer>
+  <integer name="additional_notes">104</integer>
+  <integer name="shopping_list_id">105</integer>
+  <integer name="shopping_item_id">106</integer>
+  -->
+  
+</resources>
