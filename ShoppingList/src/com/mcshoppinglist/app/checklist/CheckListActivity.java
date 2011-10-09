@@ -18,6 +18,7 @@ import com.mcshoppinglist.app.checklist.RenderManager.ViewMode;
 import com.mcshoppinglist.app.checklist.adapters.ShoppingListCursorAdapter;
 import com.mcshoppinglist.app.checklist.finders.CheckListViewFinder;
 import com.mcshoppinglist.app.checklist.listeners.AddItemClickListener;
+import com.mcshoppinglist.app.checklist.listeners.ItemClickListener;
 import com.mcshoppinglist.app.checklist.listeners.ItemLongClickListener;
 import com.mcshoppinglist.app.common.AppConstants;
 import com.mcshoppinglist.app.dataprovider.ShoppingListData.ShoppingItems;
@@ -134,6 +135,7 @@ public class CheckListActivity extends ListActivity {
 		ShoppingListCursorAdapter listAdapter = new ShoppingListCursorAdapter(this, cur);
 		setListAdapter(listAdapter);
 		getListView().setOnItemLongClickListener(new ItemLongClickListener(this));
+		getListView().setOnItemClickListener(new ItemClickListener(this));
 	}
 
 	private void refreshCheckList(boolean fullResync) {
