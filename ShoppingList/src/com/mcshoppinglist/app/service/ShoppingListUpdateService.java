@@ -5,9 +5,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import android.app.Service;
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.IBinder;
 import android.widget.Toast;
 
@@ -127,7 +127,7 @@ public class ShoppingListUpdateService extends Service {
 		// TODO This should be done differently!
 
 		if (AppConstants.isValidFormatShoppingListId(shoppingListId) && intent.getBooleanExtra(AppConstants.INTENT_REFRESH_FULL_LIST_KEY, false)) {
-			refreshShoppingList();
+			new refreshShoppingListTask().execute();
 		}
 
 		scheduleUpdateTimer();
@@ -151,9 +151,9 @@ public class ShoppingListUpdateService extends Service {
 		MCLogger.d(getClass(), "Scheduled updateItemDiffs timer to run every " + updateFrequencySec + " sec with delay of " + TIMER_DELAY_SEC + " sec");
 	}
 
-	private boolean refreshShoppingList() {
+	private String refreshShoppingList() {
+		String toastMsg = null;
 		MCLogger.d(getClass(), "Refreshing full shopping list.");
-		boolean refreshed = false;
 		// For testing
 		// InputStream testContent = getResources().openRawResource(R.raw.test_json);
 		// ShoppingList shoppingList = parser.getShoppingList(testContent);
@@ -170,18 +170,16 @@ public class ShoppingListUpdateService extends Service {
 				for (ShoppingListItem item : items) {
 					contentMgr.insertItemToDB(shoppingList.getId(), item);
 				}
-				refreshed = true;
 				updateETagPrefs(responseContainer, ETagTrigger.RefreshShoppingList);
-				Toast.makeText(this, "Sync'ed " + items.size() + " items from server", Toast.LENGTH_LONG).show();
-
+				toastMsg = "Sync'ed " + items.size() + " items from server";
 			}
 		} else {
 			ErrorResponse errorResponse = responseContainer.getErrorResponse();
-			String errorMsg = "Failed to refresh shopping list due to " + errorResponse.getErrorCode() + ": " + errorResponse.getErrorMessage();
+			String errorMsg = "Failed to refresh shopping list due to " + (errorResponse == null ? "no network" : errorResponse.getErrorCode() + ": " + errorResponse.getErrorMessage());
 			MCLogger.w(getClass(), errorMsg);
-			Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show();
+			toastMsg = errorMsg;
 		}
-		return refreshed;
+		return toastMsg;
 	}
 
 	private boolean getItemDiffs() {
@@ -208,14 +206,19 @@ public class ShoppingListUpdateService extends Service {
 		return updated;
 	}
 
-	private void addItem(ShoppingListItem item) {
-		ContentResolver provider = getContentResolver();
-		// TODO implement
-	}
+	// private void addItem(ShoppingListItem item) {
+	// ContentResolver provider = getContentResolver();
+	// // TODO implement
+	// }
 
-	private void updateItem(String shoppingListId, ShoppingListItem item, String currEtag) {
-		parser.updateItem(shoppingListId, item, currEtag);
-	}
+	// private void updateItem(String shoppingListId, ShoppingListItem item, String currEtag) {
+	// parser.updateItem(shoppingListId, item, currEtag);
+	// }
+
+	// private void updateItemCheckState(ShoppingListItem item) {
+	//
+	// // TODO implement
+	// }
 
 	private void broadcastItemDiffs(List<ShoppingListItem> diffs) {
 		Intent intentProcessItemDiffs = new Intent(INTENT_PROCESS_ITEM_DIFFS);
@@ -226,11 +229,6 @@ public class ShoppingListUpdateService extends Service {
 	private <T> void updateETagPrefs(ResponseContainer<T> responseContainer, ETagTrigger updateTrigger) {
 		String etag = responseContainer.getETag();
 		getShoppingListApplication().saveEtag(shoppingListId, etag, updateTrigger);
-	}
-
-	private void updateItemCheckState(ShoppingListItem item) {
-
-		// TODO implement
 	}
 
 	private void setRefreshTimerTask() {
@@ -253,6 +251,23 @@ public class ShoppingListUpdateService extends Service {
 
 	private ShoppingListApplication getShoppingListApplication() {
 		return (ShoppingListApplication) getApplication();
+	}
+
+	private class refreshShoppingListTask extends AsyncTask<Void, Void, String> {
+
+		@Override
+		protected String doInBackground(Void... params) {
+			return refreshShoppingList();
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			super.onPostExecute(result);
+			if (result != null) {
+				Toast.makeText(ShoppingListUpdateService.this, result, Toast.LENGTH_LONG).show();
+			}
+		}
+
 	}
 
 }
