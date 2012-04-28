@@ -8,5 +8,5 @@
 			<attribute name="javadoc_location" value="jar:platform:/resource/ShoppingList/lib/gson/gson-1.6-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="output" path="bin"/>
+	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
