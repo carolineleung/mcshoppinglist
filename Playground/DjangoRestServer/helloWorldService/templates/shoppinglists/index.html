@@ -1,9 +1,0 @@
-{% if shoppingLists %}
-    <ul>
-    {% for slist in shoppingLists %}
-        <li><a href="/shoppinglists/{{ slist.id }}/">{{ slist.id }}</a></li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No shoppingLists are available.</p>
-{% endif %}

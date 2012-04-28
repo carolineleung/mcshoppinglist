@@ -1,8 +1,0 @@
-# Copy this file to /your-hg-repo/.hg/hgrc
-
-[web]
-# Don't require https
-#push_ssl = false
-# Allow push from anyone
-allow_push = *
-
