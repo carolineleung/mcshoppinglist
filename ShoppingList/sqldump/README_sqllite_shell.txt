@@ -1,6 +1,7 @@
 # http://developer.android.com/guide/developing/tools/adb.html#sqlite
 
 // cmd
+// cd [Android install dir > platform-tools folder]. For example (on Windows)
 cd C:\opt\android\android-sdk_r09-windows\platform-tools
 adb devices
 adb -s emulator-5554 shell
