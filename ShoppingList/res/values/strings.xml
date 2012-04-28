@@ -10,7 +10,7 @@
     <string name="menu_view_all">All</string>
     <string name="menu_view_checked">Checked</string>
     <string name="menu_view_unchecked">Unchecked</string>
-    <string name="menu_import_from_txt_file">Import from txt file</string>
+    <string name="menu_import_from_txt_file">Import from text file</string>
     <string name="menu_filter_by_labels">Filter by labels</string>
     <string name="menu_clear_items">Clear items</string>
     <string name="menu_sync_list">Sync from server</string>
@@ -21,9 +21,9 @@
     <string name="title_additional_notes">Additional Notes:</string>
 
     <string name="prefs_network_enable">Enable Network</string>
-    <string name="prefs_network_enable_summary">Enable network connection to retrieve updates</string>
+    <string name="prefs_network_enable_summary">Enable network connection to sync updates</string>
     <string name="prefs_network_frequency">Pull Frequency</string>
-    <string name="prefs_network_frequency_summary">Update retrieval frequency (in sec)</string>
+    <string name="prefs_network_frequency_summary">Update sync frequency (in sec)</string>
     <string name="launching_preferences">Launching ShoppingList app preferences</string>
     
 </resources>
