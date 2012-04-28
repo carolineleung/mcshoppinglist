@@ -31,7 +31,7 @@ import com.mcshoppinglist.app.util.MCLogger;
 
 /**
  * Checklist activity. Shopping list items can be checked off. This is the primary Activity for this app.
- * 
+ * @author carolineleung
  * 
  */
 public class CheckListActivity extends ListActivity {
@@ -87,6 +87,7 @@ public class CheckListActivity extends ListActivity {
 		// TODO cl: ImportExportManager needs to take in ShoppingList, because we are inserting directly into the DB as
 		// reading through files. This is not clean, but to preserve mem used. The alternative is to return some data
 		// structure that holds all the temp entries need to be inserted, and then insert them using contentMgr
+		
 		importExportMgr = new ImportExportManager(this);
 	}
 
@@ -138,11 +139,11 @@ public class CheckListActivity extends ListActivity {
 		getListView().setOnItemClickListener(new ItemClickListener(this));
 	}
 
-	private void refreshCheckList(boolean fullResync) {
+	private void refreshCheckList(boolean fullReSync) {
 		Intent refreshCheckListIntent = new Intent(this, ShoppingListUpdateService.class);
 		refreshCheckListIntent.putExtra(AppConstants.INTENT_KEY_SHOPPING_LIST_ID, shoppingListId);
 
-		if (fullResync) {
+		if (fullReSync) {
 			refreshCheckListIntent.putExtra(AppConstants.INTENT_REFRESH_FULL_LIST_KEY, true);
 		}
 		startService(refreshCheckListIntent);

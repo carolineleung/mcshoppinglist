@@ -23,9 +23,16 @@ import com.mcshoppinglist.app.json.model.ShoppingList;
 import com.mcshoppinglist.app.json.model.ShoppingListItem;
 import com.mcshoppinglist.app.util.MCLogger;
 
+/**
+ * Background service that does the background sync to pull updates from server to Android clients.
+ * 
+ * @author carolineleung
+ *
+ */
 public class ShoppingListUpdateService extends Service {
 
 	// private static final int MS_IN_ONE_MIN = 60 * 1000;
+	
 	private static final long TIMER_DELAY_SEC = 10;
 
 	private static final String TIMER_SHOPPING_LIST_UPDATE = "ShoppingListUpdates";
@@ -71,8 +78,7 @@ public class ShoppingListUpdateService extends Service {
 
 	@Override
 	public void onLowMemory() {
-		// TODO We should stop the current update (if any) and schedule the timer in the distant future (minutes away),
-		// to free up memory.
+		// TODO We should stop the current update (if any) and schedule the timer in the distant future (minutes away), to free up memory.
 		// TODO Anything else we can do here to free up mem?
 		super.onLowMemory();
 	}
@@ -216,7 +222,6 @@ public class ShoppingListUpdateService extends Service {
 	// }
 
 	// private void updateItemCheckState(ShoppingListItem item) {
-	//
 	// // TODO implement
 	// }
 
